@@ -68,9 +68,7 @@ class ToolController extends BaseController
                 }
             }
 
-            array_push($storeShops, $storeShop);
         }
-
 
         if ($target == 'collection') {
             if ($source === 'shopify') {
