@@ -345,7 +345,11 @@ class ToolController extends BaseController
                 $values = [];
                 foreach ($op['options'] as $sop) {
                     $idValueOptions[$sop['id']] = $sop;
-                    array_push($values, $sop['value']);
+                    if(strval($sop['value']) === 'Default Title') {
+                        array_push($values, $product['title']);
+                    } else {
+                        array_push($values, $sop['value']);
+                    }
                     if (!in_array($sop['value'], $keys)) {
                         array_push($keys, $sop['id']);
                     }
@@ -558,7 +562,12 @@ class ToolController extends BaseController
                 $values = [];
                 foreach ($op['options'] as $sop) {
                     $idValueOptions[$sop['id']] = $sop;
-                    array_push($values, $sop['value']);
+                    if(strval($sop['value']) === 'Default Title') {
+                        array_push($values, $product['title']);
+                    } else {
+                        array_push($values, $sop['value']);
+                    }
+
                     if (!in_array($sop['value'], $keys)) {
                         array_push($keys, $sop['id']);
                     }
@@ -571,6 +580,7 @@ class ToolController extends BaseController
                 ]);
             }
         }
+        
         $variantIdAndSku = [];
         foreach ($product as $k => $v) {
             if ($k === 'images') {
