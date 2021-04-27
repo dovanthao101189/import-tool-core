@@ -431,10 +431,12 @@ class ToolController extends BaseController
             }
 
             foreach ($images as $i) {
-                $i['product_id'] = $product_d['product']['id'];
-                $dataI = $this->mapVariantIdAfterInsert($i, $variantIdAndSku);
-                $this->addImageShopify($dataI, $storeShop);
-                usleep(1 * 1000000);
+                if ($this->hasExtension($i['src'])) {
+                    $i['product_id'] = $product_d['product']['id'];
+                    $dataI = $this->mapVariantIdAfterInsert($i, $variantIdAndSku);
+                    $this->addImageShopify($dataI, $storeShop);
+                    usleep(1 * 1000000);
+                }
             }
             return [
                 'success' => true,
@@ -446,6 +448,21 @@ class ToolController extends BaseController
             'success' => false,
             'data' => []
         ];
+    }
+
+    private function hasExtension($strFilename) {
+        $supported_image = array(
+            'jpg',
+            'jpeg',
+            'png'
+        );
+
+        $ext = strtolower(pathinfo($strFilename, PATHINFO_EXTENSION));
+        if (in_array($ext, $supported_image)) {
+            return true;
+        }
+
+        return false;
     }
 
     private function getIdShopbase($link, $source = 'collection')
@@ -580,7 +597,7 @@ class ToolController extends BaseController
                 ]);
             }
         }
-        
+
         $variantIdAndSku = [];
         foreach ($product as $k => $v) {
             if ($k === 'images') {
